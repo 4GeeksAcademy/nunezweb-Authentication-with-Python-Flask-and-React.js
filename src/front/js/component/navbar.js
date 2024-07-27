@@ -25,6 +25,11 @@ export const Navbar = () => {
             <button onClick={() => actions.logout()} className="btn btn-primary">Logout</button>
           </div>
         )}
+        <div>
+            <Link to="/private">
+              <button className="btn btn-primary">Private Area</button>
+            </Link>
+          </div>
       </div>
     </nav>
   );
