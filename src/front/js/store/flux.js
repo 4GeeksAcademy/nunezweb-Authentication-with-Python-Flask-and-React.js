@@ -3,26 +3,26 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       message: null,
-      demo: [
-        {
-          title: "FIRST",
-          background: "white",
-          initial: "white",
-        },
-        {
-          title: "SECOND",
-          background: "white",
-          initial: "white",
-        },
-      ],
+    //   demo: [
+    //     {
+    //       title: "FIRST",
+    //       background: "white",
+    //       initial: "white",
+    //     },
+    //     {
+    //       title: "SECOND",
+    //       background: "white",
+    //       initial: "white",
+    //     },
+    //   ],
       token: null,
       userInfo: null,
     },
     actions: {
       // Use getActions to call a function within a fuction
-      exampleFunction: () => {
-        getActions().changeColor(0, "green");
-      },
+    //   exampleFunction: () => {
+    //     getActions().changeColor(0, "green");
+    //   },
 
       getMessage: async () => {
         try {
@@ -36,20 +36,20 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error loading message from backend", error);
         }
       },
-      changeColor: (index, color) => {
-        //get the store
-        const store = getStore();
+    //   changeColor: (index, color) => {
+    //     //get the store
+    //     const store = getStore();
 
-        //we have to loop the entire demo array to look for the respective index
-        //and change its color
-        const demo = store.demo.map((elm, i) => {
-          if (i === index) elm.background = color;
-          return elm;
-        });
+    //     //we have to loop the entire demo array to look for the respective index
+    //     //and change its color
+    //     const demo = store.demo.map((elm, i) => {
+    //       if (i === index) elm.background = color;
+    //       return elm;
+    //     });
 
-        //reset the global store
-        setStore({ demo: demo });
-      },
+    //     //reset the global store
+    //     setStore({ demo: demo });
+    //   },
       login: async (email, password) => {
         let resp = await fetch(apiUrl + "/login", {
           method: "POST",
@@ -67,6 +67,24 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.setItem("token", data.token);
         return true;
       },
+      signup: async (first_name, last_name, email, password) => {
+        let resp = await fetch(apiUrl + "/signup", {
+          method: "POST",
+          body: JSON.stringify({ first_name, last_name, email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!resp.ok) {
+          const errorData = await resp.json();
+          console.error("Signup error:", errorData);
+          return false;
+        }
+        let data = await resp.json();
+        alert("User created successfully!");
+        return true;
+      },
+	  
       loadSession: async () => {
         let storageToken = localStorage.getItem("token");
         if (!storageToken) return;
@@ -77,7 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
         if (!resp.ok) {
-          setStore = ({ token: null });
+          setStore({ token: null });
           localStorage.removeItem("token");
           return false;
         }

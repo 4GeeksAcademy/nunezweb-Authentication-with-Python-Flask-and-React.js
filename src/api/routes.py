@@ -16,14 +16,6 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-# @api.route('/hello', methods=['POST', 'GET'])
-# def handle_hello():
-
-#     response_body = {
-#         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-#     }
-
-#     return jsonify(response_body), 200
 
 @api.route('/signup', methods=['POST'])
 def user_signup():
@@ -32,19 +24,63 @@ def user_signup():
         return jsonify({"msg": "Field Required email"}), 400
     if "password" not in body:
         return jsonify({"msg": "Field Required password"}), 400
-    
-    encrypted_password=bcrypt.generate_password_hash(body["password"]).decode('utf-8')
 
-    new_user = User(email=body["email"], password=encrypted_password, is_active=True)
+    encrypted_password = bcrypt.generate_password_hash(body["password"]).decode('utf-8')
 
+    new_user = User(
+        email=body["email"],
+        password=encrypted_password,
+        is_active=True,
+        first_name=body["first_name"],
+        last_name=body["last_name"]
+    )
     if "first_name" in body:
         new_user.first_name = body["first_name"]
     else:
         new_user.first_name = "" 
 
+    if "last_name" in body:
+        new_user.last_name = body["last_name"]
+    else:
+        new_user.last_name = "" 
+        
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({"msg": "User created successfully"}), 201  
+    return jsonify({"msg": "User created successfully"}), 201
+
+
+# @api.route('/signup', methods=['POST'])
+# def user_signup():
+#     body = request.get_json()
+#     if "email" not in body:
+#         return jsonify({"msg": "Field Required email"}), 400
+#     if "password" not in body:
+#         return jsonify({"msg": "Field Required password"}), 400
+    
+#     encrypted_password=bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+
+#     new_user = User(
+#         email=body["email"],
+#         password=encrypted_password,
+#         is_active=True,
+#         first_name=body["first_name"],
+#         last_name=body["last_name"]
+#     )
+       
+
+#     if "first_name" in body:
+#         new_user.first_name = body["first_name"]
+#     else:
+#         new_user.first_name = "" 
+
+#     if "last_name" in body:
+#         new_user.last_name = body["last_name"]
+#     else:
+#         new_user.last_name = "" 
+
+#     db.session.add(new_user)
+#     db.session.commit()
+#     return jsonify({"msg": "User created successfully"}), 201  
 
 
 @api.route('/login', methods=['POST'])
