@@ -43,45 +43,10 @@ def user_signup():
         new_user.last_name = body["last_name"]
     else:
         new_user.last_name = "" 
-        
+
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"msg": "User created successfully"}), 201
-
-
-# @api.route('/signup', methods=['POST'])
-# def user_signup():
-#     body = request.get_json()
-#     if "email" not in body:
-#         return jsonify({"msg": "Field Required email"}), 400
-#     if "password" not in body:
-#         return jsonify({"msg": "Field Required password"}), 400
-    
-#     encrypted_password=bcrypt.generate_password_hash(body["password"]).decode('utf-8')
-
-#     new_user = User(
-#         email=body["email"],
-#         password=encrypted_password,
-#         is_active=True,
-#         first_name=body["first_name"],
-#         last_name=body["last_name"]
-#     )
-       
-
-#     if "first_name" in body:
-#         new_user.first_name = body["first_name"]
-#     else:
-#         new_user.first_name = "" 
-
-#     if "last_name" in body:
-#         new_user.last_name = body["last_name"]
-#     else:
-#         new_user.last_name = "" 
-
-#     db.session.add(new_user)
-#     db.session.commit()
-#     return jsonify({"msg": "User created successfully"}), 201  
-
 
 @api.route('/login', methods=['POST'])
 def user_login():

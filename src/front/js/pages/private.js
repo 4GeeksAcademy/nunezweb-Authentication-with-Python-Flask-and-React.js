@@ -1,13 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/private.css";
 
 export const Private = () => {
   const { store } = useContext(Context);
+  const [hasAccess, setHasAccess] = useState(!!store.token);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setHasAccess(!!token);
+  }, [store.token]);
 
   return (
     <div className="private-area p-5">
-      {store.token == null ? (
+      {!hasAccess ? (
         <div className="card p-5">
           <div className="card-body">
             <h2 className="card-title">You do not have access to this section</h2>

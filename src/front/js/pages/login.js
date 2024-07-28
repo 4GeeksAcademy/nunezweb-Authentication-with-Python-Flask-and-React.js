@@ -13,7 +13,7 @@ export const Login = () => {
     let email = formData.get("email");
     let password = formData.get("password");
     let logged = await actions.login(email, password);
-    if (logged) navigate("/"); 
+    if (logged) navigate("/private"); 
   }
 
   return (
